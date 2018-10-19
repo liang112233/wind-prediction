@@ -51,6 +51,8 @@ r2 = r2_score(y_test_true, testPredict)
 print("R Squared Error: " + str(r2))
 
 # plt.scatter(X_test, y_test_true, color='red')
-# plt.plot(idx_test, y_test_true, color='blue')
-# plt.plot(idx_test, testPredict, color='pink')
-# plt.show()
+x_indices = [i for i in range(len(idx_test))]
+
+plt.plot(x_indices, y_test_true, color='blue')
+plt.plot(x_indices, testPredict, color='pink')
+plt.show()
