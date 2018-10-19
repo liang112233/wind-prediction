@@ -16,7 +16,7 @@ idx_test = np.random.choice(samples, size=test_size, replace=False)
 idx_train = np.delete(idx_list, idx_test).astype('int')
 
 df = pd.read_csv('ANDR1602_clean.csv', sep=',')
-df = df.drop(columns=["id", "time step"])
+# df = df.drop(columns=["id", "time step"])
 
 features = ["wind direction", "temperature", "humidity", "pressure",
             "dewpoint", "wind speed at 2 meters", "solar radiation"]
@@ -58,7 +58,8 @@ print("Root Mean Squared Error: " + str(math.sqrt(mse)))
 r2 = r2_score(y_test_true, testPredict)
 print("R Squared Error: " + str(r2))
 
-# plt.scatter(X_test, y_test_true, color='red')
-# plt.plot(idx_test, y_test_true, color='blue')
-# plt.plot(idx_test, testPredict, color='pink')
-# plt.show()
+x_indices = [i for i in range(len(idx_test))]
+
+plt.plot(x_indices, y_test_true, color='blue')
+plt.plot(x_indices, testPredict, color='pink')
+plt.show()

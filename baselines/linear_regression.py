@@ -16,7 +16,7 @@ idx_test = np.random.choice(samples, size=test_size, replace=False)
 idx_train = np.delete(idx_list, idx_test).astype('int')
 
 df = pd.read_csv('ANDR1602_clean.csv', sep=',')
-df = df.drop(columns=["id", "time step"])
+# df = df.drop(columns=["id", "time step"])
 
 features = ["wind direction", "temperature", "humidity", "pressure",
             "dewpoint", "wind speed at 2 meters", "solar radiation"]
