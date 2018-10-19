@@ -34,7 +34,7 @@ def plot_results_multiple(predicted_data, true_data, prediction_len):
 
 
 def main():
-    configs = json.load(open('point_to_point_config.json', 'r'))
+    configs = json.load(open('point_to_point_similar_sinewave.json', 'r'))
     if not os.path.exists(configs['model']['save_dir']): os.makedirs(configs['model']['save_dir'])
 
     data = DataLoader(
