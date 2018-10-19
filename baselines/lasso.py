@@ -47,13 +47,14 @@ testPredict = lm.predict(X_test)
 print(testPredict[0:5])
 
 
-mae = mean_absolute_error(y_test_true, testPredict)
-print("Mean Absolute Error: " + str(mae))
 
 mse = mean_squared_error(y_test_true, testPredict)
 print("Mean Squared Error: " + str(mse))
 
 print("Root Mean Squared Error: " + str(math.sqrt(mse)))
+
+mae = mean_absolute_error(y_test_true, testPredict)
+print("Mean Absolute Error: " + str(mae))
 
 r2 = r2_score(y_test_true, testPredict)
 print("R Squared Error: " + str(r2))
