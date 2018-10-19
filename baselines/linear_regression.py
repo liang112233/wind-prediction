@@ -29,7 +29,7 @@ X_train = df_train[features]
 y_train = df_train[target]
 
 
-lm = linear_model.LinearRegression()
+lm = linear_model.LinearRegression(normalize=True)
 model = lm.fit(X_train, y_train)
 
 X_test = df_test[features]
