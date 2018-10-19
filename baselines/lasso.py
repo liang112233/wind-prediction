@@ -1,66 +1,64 @@
-import csv
-from datetime import datetime, timedelta
 from sklearn import linear_model
-import numpy as np
-# import sklearn.cross_validation as cv
-
+import pandas as pd
+from sklearn import datasets ## imports datasets from scikit-learn
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+import matplotlib.pyplot as plt
+import numpy as np
 import math
 
-import matplotlib.pyplot as plt
+np.random.seed(7)
 
-months = []
-water_levels = []
+samples = 8352
+test_size = int(0.1*samples)
+# create training and testing sets
+idx_list = np.linspace(0, samples-1, num=samples)
+idx_test = np.random.choice(samples, size=test_size, replace=False)
+idx_train = np.delete(idx_list, idx_test).astype('int')
 
-# read data
-with open('carson-training.csv', newline='') as csvfile:
-    diagnosis_reader = csv.reader(csvfile, delimiter=',')
-    header = True
-    for row in diagnosis_reader:
-        if header:
-            header = False
-            continue
-        months.append(datetime.strptime(row[0], '%Y-%m'))
-        water_levels.append(float(row[1]))
+df = pd.read_csv('ANDR1602_clean.csv', sep=',')
+df = df.drop(columns=["id", "time step"])
 
-water_levels.reverse()
+features = ["wind direction", "temperature", "humidity", "pressure",
+            "dewpoint", "wind speed at 2 meters", "solar radiation"]
+target = ["wind speed"]
 
-size = int(len(water_levels) * 0.66)
-months_num = np.arange(0, len(months), 1)
+df_train = df.iloc[idx_train, ]
+df_test = df.iloc[idx_test, ]
 
+X_train = df_train[features]
+y_train = df_train[target]
 
-# X_train, X_test, y_train, y_test = cv.train_test_split(months_num, water_levels, test_size=0.25, random_state=0)
+#### Core model #####
+lm = linear_model.LassoCV(normalize=True, max_iter=1e5)
+model = lm.fit(X_train, y_train)
 
-trainX = testX = months_num
-
-trainX = np.reshape(trainX, (-1, 1))
-testX = np.reshape(testX, (-1, 1))
-
-#regr = linear_model.LassoCV(normalize=True, max_iter=1e5)
-regr = linear_model.LassoCV(normalize=True, max_iter=1e5)
-regr.fit(trainX, water_levels)
-
-regr_score = regr.score(trainX, water_levels)
-regr_alpha = regr.alpha_
+regr_score = lm.score(X_train, y_train)
+regr_alpha = lm.alpha_
 print('score:', regr_score, "; alpha:", regr_alpha)
-print('CV', regr.coef_)
+print('CV', lm.coef_)
 
 
-test_true_values = water_levels
-testPredict = regr.predict(testX)
+#### ########################
 
-mae = mean_absolute_error(test_true_values, testPredict)
+X_test = df_test[features]
+y_test_true = df_test[target]
+
+testPredict = lm.predict(X_test)
+print(testPredict[0:5])
+
+
+mae = mean_absolute_error(y_test_true, testPredict)
 print("Mean Absolute Error: " + str(mae))
 
-mse = mean_squared_error(test_true_values, testPredict)
+mse = mean_squared_error(y_test_true, testPredict)
 print("Mean Squared Error: " + str(mse))
 
 print("Root Mean Squared Error: " + str(math.sqrt(mse)))
 
-r2 = r2_score(test_true_values, testPredict)
+r2 = r2_score(y_test_true, testPredict)
 print("R Squared Error: " + str(r2))
 
-plt.scatter(testX, test_true_values, color='red')
-plt.plot(testX, test_true_values, color='blue')
-plt.plot(testX, testPredict, color='pink')
-plt.show()
+# plt.scatter(X_test, y_test_true, color='red')
+# plt.plot(idx_test, y_test_true, color='blue')
+# plt.plot(idx_test, testPredict, color='pink')
+# plt.show()
