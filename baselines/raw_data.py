@@ -16,6 +16,6 @@ y = df[target]
 
 # plt.scatter(X_test, y_test_true, color='red')
 # plt.plot(idx_test, y_test_true, color='blue')
-plt.plot(X, y, color='pink')
+plt.plot(X[10:100], y[10:100], color='pink')
 plt.show()
 
