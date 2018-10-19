@@ -1,1 +1,4 @@
 .idea/
+lstmseries/saved_models/
+lstmseries/data/
+lstmseries/config.json
