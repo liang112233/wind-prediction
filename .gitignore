@@ -4,3 +4,4 @@ lstmseries/data/
 lstmseries/config.json
 lstmseries/__pycache__/
 lstmseries/core/__pycache__/
+baselines/__pycache__/

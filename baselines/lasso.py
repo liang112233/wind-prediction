@@ -5,15 +5,20 @@ from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-
+from baselines.util import plot_results
 np.random.seed(7)
 
 samples = 8352
-test_size = int(0.1*samples)
-# create training and testing sets
-idx_list = np.linspace(0, samples-1, num=samples)
-idx_test = np.random.choice(samples, size=test_size, replace=False)
-idx_train = np.delete(idx_list, idx_test).astype('int')
+train_size = int(0.9*samples)
+
+idx_train = [i for i in range(train_size)]
+idx_test = [j for j in range(train_size, samples)]
+
+# test_size = int(0.1*samples)
+# # create training and testing sets
+# idx_list = np.linspace(0, samples-1, num=samples)
+# idx_test = np.random.choice(samples, size=test_size, replace=False)
+# idx_train = np.delete(idx_list, idx_test).astype('int')
 
 df = pd.read_csv('ANDR1602_clean.csv', sep=',')
 # df = df.drop(columns=["id", "time step"])
@@ -60,7 +65,9 @@ r2 = r2_score(y_test_true, testPredict)
 print("R Squared Error: " + str(r2))
 
 x_indices = [i for i in range(len(idx_test))]
+#
+# plt.plot(x_indices, y_test_true, color='blue')
+# plt.plot(x_indices, testPredict, color='pink')
+# plt.show()
 
-plt.plot(x_indices, y_test_true, color='blue')
-plt.plot(x_indices, testPredict, color='pink')
-plt.show()
+plot_results(testPredict, y_test_true.values)
