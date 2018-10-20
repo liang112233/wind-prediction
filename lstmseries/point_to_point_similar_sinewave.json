@@ -26,7 +26,7 @@
 		"layers": [
 			{
 				"type": "lstm",
-				"neurons": 128,
+				"neurons": 64,
 				"input_timesteps": 1,
 				"input_dim": 8,
 				"return_seq": true
@@ -34,11 +34,6 @@
 			{
 				"type": "lstm",
 				"neurons": 64,
-				"return_seq": true
-			},
-			{
-				"type": "lstm",
-				"neurons": 32,
 				"return_seq": false
 			},
 			{
