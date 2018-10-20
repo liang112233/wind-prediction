@@ -2,3 +2,5 @@
 lstmseries/saved_models/
 lstmseries/data/
 lstmseries/config.json
+lstmseries/__pycache__/
+lstmseries/core/__pycache__/

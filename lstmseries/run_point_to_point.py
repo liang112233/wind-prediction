@@ -10,6 +10,7 @@ import math
 import matplotlib.pyplot as plt
 from core.data_processor import DataLoader
 from core.model import Model
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 
 
 def plot_results(predicted_data, true_data):
@@ -83,8 +84,20 @@ def main():
     # predictions = model.predict_sequence_full(x_test, configs['data']['sequence_length'])
     predictions = model.predict_point_by_point(x_test)
 
+
     # plot_results_multiple(predictions, y_test, configs['data']['sequence_length'])
     plot_results(predictions, y_test)
+
+    mse = mean_squared_error(y_test, predictions)
+    print("Mean Squared Error: " + str(mse))
+
+    print("Root Mean Squared Error: " + str(math.sqrt(mse)))
+
+    mae = mean_absolute_error(y_test, predictions)
+    print("Mean Absolute Error: " + str(mae))
+
+    r2 = r2_score(y_test, predictions)
+    print("R Squared Error: " + str(r2))
 
 
 if __name__ == '__main__':
