@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from core.data_processor import DataLoader
 from core.model import Model
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
-
+import numpy as np
 
 def plot_results(predicted_data, true_data):
     fig = plt.figure(facecolor='white')
@@ -84,7 +84,17 @@ def main():
     # predictions = model.predict_sequence_full(x_test, configs['data']['sequence_length'])
     predictions = model.predict_point_by_point(x_test)
 
+    predictions = predictions.reshape(-1, 1)
+    normalized_test = data.get_normalized_test()
+    normalized_test = np.delete(normalized_test, [j for j in range(len(predictions), len(normalized_test))], axis=0)
+    my_normalized_test = np.delete(normalized_test, [0], axis=1)
+    # my_normalized_test = np.delete(my_normalized_test, [j for j in range(len(predictions), len(my_normalized_test))], axis=0)
 
+    final_data = np.hstack((predictions, my_normalized_test))
+    actual_predictions = data.inverse_data(final_data)
+    predictions = actual_predictions[:, 0]
+    actual_test = data.inverse_data(normalized_test)
+    y_test = actual_test[:, 0]
     # plot_results_multiple(predictions, y_test, configs['data']['sequence_length'])
     plot_results(predictions, y_test)
 

@@ -1,18 +1,31 @@
 import math
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
 
 class DataLoader():
     """A class for loading and transforming data for the lstm model"""
 
     def __init__(self, filename, split, cols):
         dataframe = pd.read_csv(filename)
+
+        self.data_scaler = MinMaxScaler(feature_range=(0, 1))
+        self.normalized_data = self.data_scaler.fit_transform(dataframe)
+        dataframe = pd.DataFrame(self.normalized_data, columns=cols)
+
         i_split = int(len(dataframe) * split)
         self.data_train = dataframe.get(cols).values[:i_split]
         self.data_test  = dataframe.get(cols).values[i_split:]
         self.len_train  = len(self.data_train)
         self.len_test   = len(self.data_test)
         self.len_train_windows = None
+
+
+    def get_normalized_test(self):
+        return self.data_test
+
+    def inverse_data(self, X):
+        return self.data_scaler.inverse_transform(X)
 
     def get_test_data(self, seq_len, normalise):
         '''
